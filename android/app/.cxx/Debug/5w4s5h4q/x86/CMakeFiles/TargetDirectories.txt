@@ -1,0 +1,15 @@
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/CMakeFiles/appmodules.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/CMakeFiles/rebuild_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/rnasyncstorage_autolinked_build/CMakeFiles/react_codegen_rnasyncstorage.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/rnasyncstorage_autolinked_build/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/rnasyncstorage_autolinked_build/CMakeFiles/rebuild_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/RNMapsSpecs_autolinked_build/CMakeFiles/react_codegen_RNMapsSpecs.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/RNMapsSpecs_autolinked_build/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/RNMapsSpecs_autolinked_build/CMakeFiles/rebuild_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/safeareacontext_autolinked_build/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/safeareacontext_autolinked_build/CMakeFiles/rebuild_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/rnscreens_autolinked_build/CMakeFiles/react_codegen_rnscreens.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/rnscreens_autolinked_build/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/Debug/5w4s5h4q/x86/rnscreens_autolinked_build/CMakeFiles/rebuild_cache.dir

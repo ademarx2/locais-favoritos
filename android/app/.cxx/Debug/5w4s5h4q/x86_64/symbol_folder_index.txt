@@ -1,0 +1,1 @@
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/build/intermediates/cxx/Debug/5w4s5h4q/obj/x86_64

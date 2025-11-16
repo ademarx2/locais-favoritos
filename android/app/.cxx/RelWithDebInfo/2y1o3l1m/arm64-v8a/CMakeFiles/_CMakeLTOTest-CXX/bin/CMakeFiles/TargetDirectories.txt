@@ -1,0 +1,4 @@
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/arm64-v8a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/foo.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/arm64-v8a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/boo.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/arm64-v8a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/arm64-v8a/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/rebuild_cache.dir

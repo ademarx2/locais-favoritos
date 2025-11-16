@@ -1,0 +1,15 @@
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/CMakeFiles/appmodules.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/CMakeFiles/rebuild_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/rnasyncstorage_autolinked_build/CMakeFiles/react_codegen_rnasyncstorage.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/rnasyncstorage_autolinked_build/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/rnasyncstorage_autolinked_build/CMakeFiles/rebuild_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/RNMapsSpecs_autolinked_build/CMakeFiles/react_codegen_RNMapsSpecs.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/RNMapsSpecs_autolinked_build/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/RNMapsSpecs_autolinked_build/CMakeFiles/rebuild_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/safeareacontext_autolinked_build/CMakeFiles/react_codegen_safeareacontext.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/safeareacontext_autolinked_build/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/safeareacontext_autolinked_build/CMakeFiles/rebuild_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/rnscreens_autolinked_build/CMakeFiles/react_codegen_rnscreens.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/rnscreens_autolinked_build/CMakeFiles/edit_cache.dir
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/.cxx/RelWithDebInfo/2y1o3l1m/x86_64/rnscreens_autolinked_build/CMakeFiles/rebuild_cache.dir

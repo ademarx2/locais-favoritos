@@ -1,0 +1,1 @@
+/Users/ademarneto/dev/projeto react native/LocaisFavoritosApp/android/app/build/intermediates/cxx/RelWithDebInfo/2y1o3l1m/obj/armeabi-v7a
