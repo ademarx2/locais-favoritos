@@ -1,45 +1,51 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect, useState } from 'react';
+import RootNavigator from './src/navigation/RootNavigator';
+import { Place } from './src/types/Place';
+import { loadPlaces, savePlaces } from './src/storage/placesStorage';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+export type PlacesContextType = {
+  places: Place[];
+  addPlace: (place: Omit<Place, 'id'>) => void;
+  updatePlace: (place: Place) => void;
+  removePlace: (id: string) => void;
+};
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+export const PlacesContext = React.createContext<PlacesContextType | null>(null);
+
+const App: React.FC = () => {
+  const [places, setPlaces] = useState<Place[]>([]);
+
+  useEffect(() => {
+    // carrega do AsyncStorage
+    loadPlaces().then(setPlaces);
+  }, []);
+
+  useEffect(() => {
+    // salva sempre que mudar
+    savePlaces(places);
+  }, [places]);
+
+  const addPlace = (data: Omit<Place, 'id'>) => {
+    const newPlace: Place = {
+      id: Date.now().toString(),
+      ...data,
+    };
+    setPlaces((prev) => [...prev, newPlace]);
+  };
+
+  const updatePlace = (place: Place) => {
+    setPlaces((prev) => prev.map((p) => (p.id === place.id ? place : p)));
+  };
+
+  const removePlace = (id: string) => {
+    setPlaces((prev) => prev.filter((p) => p.id !== id));
+  };
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+    <PlacesContext.Provider value={{ places, addPlace, updatePlace, removePlace }}>
+      <RootNavigator />
+    </PlacesContext.Provider>
   );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+};
 
 export default App;
