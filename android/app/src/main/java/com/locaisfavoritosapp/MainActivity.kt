@@ -1,6 +1,7 @@
 package com.locaisfavoritosapp
 
 import android.os.Bundle;
+import androidx.core.view.WindowCompat // Importação necessária
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
@@ -22,10 +23,12 @@ class MainActivity : ReactActivity() {
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
 
   /**
-   * Adicionado para corrigir o erro "Tried to access onWindowFocusChange while context is not ready".
-   * Isso previne problemas de recriação da atividade em certos cenários.
+   * Correções para a interface do usuário no Android.
    */
   override fun onCreate(savedInstanceState: Bundle?) {
+    // A linha super.onCreate(null) é uma correção para outro problema, mantenha-a.
     super.onCreate(null)
+    // A linha abaixo desativa a renderização "edge-to-edge" e corrige a sobreposição da barra de navegação.
+    WindowCompat.setDecorFitsSystemWindows(window, true)
   }
 }
