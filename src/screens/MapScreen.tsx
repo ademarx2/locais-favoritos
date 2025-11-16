@@ -117,6 +117,10 @@ const MapScreen: React.FC = () => {
   const { places, isLoading } = placesContext;
 
   const handleMapPress = (event: MapPressEvent) => {
+    if (event.nativeEvent.action === 'marker-press') {
+      return;
+    }
+
     const coords = event.nativeEvent.coordinate;
     navigation.navigate('PlaceForm', { latitude: coords.latitude, longitude: coords.longitude });
   };
