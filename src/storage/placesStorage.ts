@@ -1,20 +1,23 @@
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Place } from '../types/Place';
 
-const KEY = '@places';
+const STORAGE_KEY = '@favorite_places';
 
-export async function loadPlaces(): Promise<Place[]> {
-  const data = await AsyncStorage.getItem(KEY);
-  if (!data) return [];
+export const savePlaces = async (places: Place[]): Promise<void> => {
   try {
-    return JSON.parse(data) as Place[];
-  } catch {
+    const jsonValue = JSON.stringify(places);
+    await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
+  } catch (e) {
+    console.error('Failed to save places to storage', e);
+  }
+};
+
+export const loadPlaces = async (): Promise<Place[]> => {
+  try {
+    const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
+    return jsonValue != null ? JSON.parse(jsonValue) : [];
+  } catch (e) {
+    console.error('Failed to load places from storage', e);
     return [];
   }
-}
-
-export async function savePlaces(places: Place[]): Promise<void> {
-  await AsyncStorage.setItem(KEY, JSON.stringify(places));
-}
-
+};
