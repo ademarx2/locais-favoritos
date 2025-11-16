@@ -19,7 +19,13 @@ const RootNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Map" component={MapScreen} options={{ title: 'Mapa' }} />
-        <Stack.Screen name="PlaceForm" component={PlaceFormScreen} options={{ title: 'Novo Lugar' }} />
+        <Stack.Screen 
+          name="PlaceForm" 
+          component={PlaceFormScreen} 
+          options={({ route }) => ({ 
+            title: route.params?.placeId ? 'Editar Lugar' : 'Novo Lugar' 
+          })} 
+        />
         <Stack.Screen name="PlacesList" component={PlacesListScreen} options={{ title: 'Lugares Salvos' }} />
       </Stack.Navigator>
     </NavigationContainer>

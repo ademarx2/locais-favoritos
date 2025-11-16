@@ -2,8 +2,8 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
-// Lê o arquivo local.properties para carregar a chave da API
 import java.util.Properties
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -31,26 +31,33 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-
-        // Disponibiliza a chave para o AndroidManifest
         manifestPlaceholders = [
             MAPS_API_KEY: localProperties.getProperty('MAPS_API_KEY', 'YOUR_API_KEY')
         ]
     }
+    
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+        release {
+            if (System.getenv("MYAPP_RELEASE_STORE_FILE") != null) {
+                storeFile file(System.getenv("MYAPP_RELEASE_STORE_FILE"))
+                storePassword System.getenv("MYAPP_RELEASE_STORE_PASSWORD")
+                keyAlias System.getenv("MYAPP_RELEASE_KEY_ALIAS")
+                keyPassword System.getenv("MYAPP_RELEASE_KEY_PASSWORD")
+            } else {
+                storeFile file("my-release-key.keystore")
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias "my-key-alias"
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
         }
     }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import RootNavigator from './src/navigation/RootNavigator';
 import { Place } from './src/types/Place';
 import { loadPlaces, savePlaces } from './src/storage/placesStorage';
 
 export type PlacesContextType = {
   places: Place[];
+  isLoading: boolean;
   addPlace: (place: Omit<Place, 'id'>) => void;
   updatePlace: (place: Place) => void;
   removePlace: (id: string) => void;
@@ -14,35 +15,64 @@ export const PlacesContext = React.createContext<PlacesContextType | null>(null)
 
 const App: React.FC = () => {
   const [places, setPlaces] = useState<Place[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // carrega do AsyncStorage
-    loadPlaces().then(setPlaces);
+    const bootstrap = async () => {
+      try {
+        const loadedPlaces = await loadPlaces();
+        setPlaces(loadedPlaces);
+      } catch (e) {
+        console.error("Failed to load places.", e);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    bootstrap();
   }, []);
 
   useEffect(() => {
-    // salva sempre que mudar
-    savePlaces(places);
-  }, [places]);
+    if (!isLoading) {
+      savePlaces(places);
+    }
+  }, [places, isLoading]);
 
-  const addPlace = (data: Omit<Place, 'id'>) => {
-    const newPlace: Place = {
-      id: Date.now().toString(),
-      ...data,
-    };
-    setPlaces((prev) => [...prev, newPlace]);
-  };
+  const addPlace = useCallback((data: Omit<Place, 'id'>) => {
+    setPlaces(currentPlaces => {
+      const newPlace: Place = {
+        id: new Date().toISOString() + Math.random().toString(), // Chave única e robusta
+        ...data,
+      };
+      // Retorna um NOVO array, garantindo a atualização da interface
+      return [...currentPlaces, newPlace];
+    });
+  }, []);
 
-  const updatePlace = (place: Place) => {
-    setPlaces((prev) => prev.map((p) => (p.id === place.id ? place : p)));
-  };
+  const updatePlace = useCallback((updatedPlace: Place) => {
+    setPlaces(currentPlaces => 
+      // .map() já retorna um novo array
+      currentPlaces.map(p => (p.id === updatedPlace.id ? updatedPlace : p))
+    );
+  }, []);
 
-  const removePlace = (id: string) => {
-    setPlaces((prev) => prev.filter((p) => p.id !== id));
-  };
+  const removePlace = useCallback((id: string) => {
+    setPlaces(currentPlaces => 
+      // .filter() já retorna um novo array
+      currentPlaces.filter(p => p.id !== id)
+    );
+  }, []);
+
+  // Memoiza o valor do contexto para evitar re-renderizações desnecessárias
+  const contextValue = useMemo(() => ({
+    places,
+    isLoading,
+    addPlace,
+    updatePlace,
+    removePlace,
+  }), [places, isLoading, addPlace, updatePlace, removePlace]);
 
   return (
-    <PlacesContext.Provider value={{ places, addPlace, updatePlace, removePlace }}>
+    <PlacesContext.Provider value={contextValue}>
       <RootNavigator />
     </PlacesContext.Provider>
   );
