@@ -26,8 +26,14 @@ import { Place } from '../types/Place';
 type Nav = NativeStackNavigationProp<RootStackParamList, 'Map'>;
 
 const PlacesList = () => {
-  const { places } = useContext(PlacesContext) as PlacesContextType;
+  const placesContext = useContext(PlacesContext);
   const navigation = useNavigation<Nav>();
+
+  if (!placesContext) {
+    return <Text>Erro ao carregar locais.</Text>;
+  }
+
+  const { places } = placesContext;
 
   const renderItem = ({ item }: { item: Place }) => (
     <TouchableOpacity
@@ -60,52 +66,59 @@ const PlacesList = () => {
 };
 
 const MapScreen: React.FC = () => {
-  const { places, isLoading } = useContext(PlacesContext) as PlacesContextType;
+  const placesContext = useContext(PlacesContext);
   const navigation = useNavigation<Nav>();
   const [region, setRegion] = useState<Region | null>(null);
   const { width } = useWindowDimensions();
   const isTablet = width >= 600;
 
   useEffect(() => {
-    const requestLocation = async () => {
+    const requestLocationPermission = async () => {
       if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          Alert.alert('Permissão Negada');
-          setRegion({ latitude: -23.5505, longitude: -46.6333, latitudeDelta: 0.0922, longitudeDelta: 0.0421 });
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+          );
+          if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+            Alert.alert('Permissão Negada', 'A permissão de localização é necessária para mostrar o mapa.');
+            return;
+          }
+        } catch (err) {
+          console.warn(err);
           return;
         }
       }
+
       Geolocation.getCurrentPosition(
-        (pos) => {
-          if (!region) {
-            setRegion({
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            });
-          }
+        (position) => {
+          setRegion({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          });
         },
-        (err) => {
-          console.log(err);
-          if (!region) {
-            setRegion({ latitude: -23.5505, longitude: -46.6333, latitudeDelta: 0.0922, longitudeDelta: 0.0421 });
-          }
+        (error) => {
+          console.log(error);
+          Alert.alert('Erro de Localização', error.message);
+          setRegion({ latitude: -23.5505, longitude: -46.6333, latitudeDelta: 0.0922, longitudeDelta: 0.0421 });
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
     };
-    requestLocation();
-  }, [region]);
+
+    requestLocationPermission();
+  }, []);
+
+  if (!placesContext) {
+    return <Text>Contexto não encontrado!</Text>;
+  }
+  
+  const { places, isLoading } = placesContext;
 
   const handleMapPress = (event: MapPressEvent) => {
-    // Impede o clique se um marcador for clicado
-    if (event.nativeEvent.action === 'marker-press') {
-      return;
-    }
-    const { latitude, longitude } = event.nativeEvent.coordinate;
-    navigation.navigate('PlaceForm', { latitude, longitude });
+    const coords = event.nativeEvent.coordinate;
+    navigation.navigate('PlaceForm', { latitude: coords.latitude, longitude: coords.longitude });
   };
 
   if (!region || isLoading) {
@@ -117,38 +130,34 @@ const MapScreen: React.FC = () => {
     );
   }
 
-  const mapItself = (
-    <MapView
-      key={places.map(p => `${p.id}-${p.name}-${p.color}`).join(',')}
-      provider={PROVIDER_GOOGLE}
-      style={styles.map}
-      initialRegion={region}
-      onRegionChangeComplete={setRegion}
-      onPress={handleMapPress}
-      showsUserLocation={true}
-      showsMyLocationButton={true}
-      zoomControlEnabled={true}
-    >
-      {places.map((place) => (
-        <Marker
-          key={place.id}
-          coordinate={{ latitude: place.latitude, longitude: place.longitude }}
-          onPress={() => navigation.navigate('PlaceForm', { placeId: place.id })}
-          anchor={{ x: 0.5, y: 1 }} // A ponta do marcador fica na coordenada
-        >
-          <View style={[styles.customMarker, { backgroundColor: place.color || '#FF0000' }]}>
-            <Text style={styles.markerText}>{place.name}</Text>
-          </View>
-        </Marker>
-      ))}
-    </MapView>
-  );
-
   if (isTablet) {
     return (
       <View style={styles.tabletContainer}>
         <View style={styles.mapContainer}>
-          {mapItself}
+          <MapView
+            key={places.map(p => `${p.id}-${p.name}-${p.color}`).join(',')}
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            initialRegion={region}
+            onRegionChangeComplete={setRegion}
+            onPress={handleMapPress}
+            showsUserLocation={true}
+            showsMyLocationButton={true}
+            zoomControlEnabled={true}
+          >
+            {places.map((place) => (
+              <Marker
+                key={place.id}
+                coordinate={{ latitude: place.latitude, longitude: place.longitude }}
+                onPress={() => navigation.navigate('PlaceForm', { placeId: place.id })}
+                anchor={{ x: 0.5, y: 1 }}
+              >
+                <View style={[styles.customMarker, { backgroundColor: place.color || '#FF0000' }]}>
+                  <Text style={styles.markerText}>{place.name}</Text>
+                </View>
+              </Marker>
+            ))}
+          </MapView>
           <Fab onPress={() => navigation.navigate('PlaceForm', {})} style={{ bottom: 20, right: 'auto', left: 20 }} />
         </View>
         <PlacesList />
@@ -158,7 +167,30 @@ const MapScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {mapItself}
+      <MapView
+        key={places.map(p => `${p.id}-${p.name}-${p.color}`).join(',')}
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        initialRegion={region}
+        onRegionChangeComplete={setRegion}
+        onPress={handleMapPress}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        zoomControlEnabled={true}
+      >
+        {places.map((place) => (
+          <Marker
+            key={place.id}
+            coordinate={{ latitude: place.latitude, longitude: place.longitude }}
+            onPress={() => navigation.navigate('PlaceForm', { placeId: place.id })}
+            anchor={{ x: 0.5, y: 1 }}
+          >
+            <View style={[styles.customMarker, { backgroundColor: place.color || '#FF0000' }]}>
+              <Text style={styles.markerText}>{place.name}</Text>
+            </View>
+          </Marker>
+        ))}
+      </MapView>
       {places.length > 0 && (
         <View style={styles.mobileButtonContainer}>
           <Button title="Ver Lista" onPress={() => navigation.navigate('PlacesList')} />
@@ -199,7 +231,7 @@ const styles = StyleSheet.create({
   customMarker: {
     paddingVertical: 5,
     paddingHorizontal: 10,
-    backgroundColor: '#007bff', // Cor padrão
+    backgroundColor: '#007bff',
     borderRadius: 15,
     borderColor: 'white',
     borderWidth: 1,

@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import MapScreen from '../screens/MapScreen';
 import PlaceFormScreen from '../screens/PlaceFormScreen';
 import PlacesListScreen from '../screens/PlacesListScreen';
-import { Place } from '../types/Place';
 
 export type RootStackParamList = {
   Map: undefined;
@@ -18,15 +17,13 @@ const RootNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Map" component={MapScreen} options={{ title: 'Mapa' }} />
+        <Stack.Screen name="Map" component={MapScreen} options={{ title: 'Meus Lugares' }} />
         <Stack.Screen 
           name="PlaceForm" 
           component={PlaceFormScreen} 
-          options={({ route }) => ({ 
-            title: route.params?.placeId ? 'Editar Lugar' : 'Novo Lugar' 
-          })} 
+          options={{ title: 'Salvar Lugar' }} 
         />
-        <Stack.Screen name="PlacesList" component={PlacesListScreen} options={{ title: 'Lugares Salvos' }} />
+        <Stack.Screen name="PlacesList" component={PlacesListScreen} options={{ title: 'Lista de Lugares' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

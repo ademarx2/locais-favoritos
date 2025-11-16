@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Button, Alert, ActivityIndicator, ScrollView } from 'react-native';
+import { Button, Alert, ActivityIndicator, View } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import styled from 'styled-components/native';
 
@@ -36,7 +36,7 @@ type PlaceFormScreenRouteProp = RouteProp<RootStackParamList, 'PlaceForm'>;
 const PlaceFormScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute<PlaceFormScreenRouteProp>();
-  const { places, isLoading, addPlace, updatePlace, removePlace } = useContext(PlacesContext) as PlacesContextType;
+  const placesContext = useContext(PlacesContext);
 
   const [name, setName] = useState('');
   const [latitude, setLatitude] = useState('');
@@ -46,8 +46,8 @@ const PlaceFormScreen: React.FC = () => {
   const placeId = route.params?.placeId;
 
   useEffect(() => {
-    if (placeId && !isLoading) {
-      const existingPlace = places.find(p => p.id === placeId);
+    if (placeId && placesContext) {
+      const existingPlace = placesContext.places.find(p => p.id === placeId);
       if (existingPlace) {
         setName(existingPlace.name);
         setLatitude(existingPlace.latitude.toString());
@@ -58,25 +58,24 @@ const PlaceFormScreen: React.FC = () => {
       setLatitude(route.params.latitude.toString());
       setLongitude(route.params.longitude.toString());
     }
-  }, [placeId, isLoading, places, route.params]);
+  }, [placeId, placesContext]);
+
+  if (!placesContext) {
+    return <Text>Erro no contexto de locais</Text>;
+  }
+  
+  const { addPlace, updatePlace, removePlace } = placesContext;
 
   const handleSave = () => {
     const lat = parseFloat(latitude);
     const lon = parseFloat(longitude);
-    const trimmedName = name.trim();
-    const trimmedColor = color.trim();
 
-    if (!trimmedName || isNaN(lat) || isNaN(lon) || !trimmedColor) {
-      Alert.alert('Erro', 'Por favor, preencha todos os campos corretamente.');
+    if (!name || !latitude || !longitude) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos.');
       return;
     }
 
-    const placeData = { 
-      name: trimmedName, 
-      latitude: lat, 
-      longitude: lon, 
-      color: trimmedColor 
-    };
+    const placeData = { name, latitude: lat, longitude: lon, color };
 
     if (placeId) {
       updatePlace({ ...placeData, id: placeId });
@@ -90,7 +89,7 @@ const PlaceFormScreen: React.FC = () => {
     if (placeId) {
       Alert.alert(
         'Confirmar Exclusão',
-        'Você tem certeza que quer apagar este lugar?',
+        'Tem certeza que quer apagar este lugar?',
         [
           { text: 'Cancelar', style: 'cancel' },
           { text: 'Apagar', style: 'destructive', onPress: () => {
@@ -102,12 +101,8 @@ const PlaceFormScreen: React.FC = () => {
     }
   };
 
-  if (isLoading && placeId) {
-    return <ActivityIndicator style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} size="large" />;
-  }
-
   return (
-    <ScrollView contentContainerStyle={{ padding: 20, backgroundColor: '#f5f5f5' }}>
+    <Container>
       <Label>Nome do Local</Label>
       <Input value={name} onChangeText={setName} placeholder="Ex: Minha Casa" />
 
@@ -129,7 +124,7 @@ const PlaceFormScreen: React.FC = () => {
           <Button title="Apagar Lugar" color="#FF3B30" onPress={handleDelete} />
         </ButtonContainer>
       )}
-    </ScrollView>
+    </Container>
   );
 };
 
